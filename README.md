@@ -24,7 +24,7 @@ It takes a zip file created by the [data getter scripts](https://github.com/Thre
  - Run [datagetter](https://github.com/ThreeSixtyGiving/datagetter) locally or copy a tarball output file.
  - Clone or download this repo.
  - In a terminal or command window, navigate to the repo
- - Run the command: python sotd.py --tar "*path to tarball*" --schema "http://www.threesixtygiving.org/wp-content/plugins/threesixty_docs/standard/schema/360-giving-schema.json"
+ - Run the command: python sotd.py --tar "*path to tarball*" --schema "http://standard.threesixtygiving.org/en/latest/_static/360-giving-schema.json"
 
 The script will extract JSON files from the tarball - these are spreadsheets and other files downloaded from the data registry and converted to JSON.
 
