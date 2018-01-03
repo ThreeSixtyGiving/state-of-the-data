@@ -241,7 +241,6 @@ def main():
     tarPath = args.tar
     schemaPath = args.schema
     localSchema = "360-giving-schema.json"
-    jsonFiles = glob(os.path.join("data","json_all","*.json"))
     dataAllFile = os.path.join("data","data_all.json")
     recommendedFields = ["grantProgramme","beneficiaryLocation","dataSource", "dateModified"]
        
@@ -262,6 +261,9 @@ def main():
     if dfAll is None:
         print("Error: Getting Data All fields")
         return False  
+
+    jsonFiles = glob(os.path.join("data","json_all","*.json"))
+
     dfMeta, dfFreq = getColumnFields(jsonFiles, dfAll, dfSchema)
     if dfMeta is None or dfFreq is None:
         print("Error: Getting metadata and frequency fields")

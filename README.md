@@ -24,7 +24,7 @@ It takes a zip file created by the [data getter scripts](https://github.com/Thre
  - Run [datagetter](https://github.com/ThreeSixtyGiving/datagetter) locally (via the `run.sh` script) or copy a tarball output file.
  - Clone or download this repo.
  - In a terminal or command window, navigate to the repo
- - Create a virutal environment:`python -m venv .ve`
+ - Create a virutal environment:`python3 -m venv .ve`
  - `source .ve/bin/activate`
  - Install requirements:`pip install -r requirements.txt`
  - Run the command `python sotd.py --tar "*path/to/tarball.tar.gz*"`
