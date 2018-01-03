@@ -21,14 +21,17 @@ It takes a zip file created by the [data getter scripts](https://github.com/Thre
 
 ## Instructions
 
- - Run [datagetter](https://github.com/ThreeSixtyGiving/datagetter) locally or copy a tarball output file.
+ - Run [datagetter](https://github.com/ThreeSixtyGiving/datagetter) locally (via the `run.sh` script) or copy a tarball output file.
  - Clone or download this repo.
  - In a terminal or command window, navigate to the repo
- - Run the command: python sotd.py --tar "*path to tarball*" --schema "http://www.threesixtygiving.org/wp-content/plugins/threesixty_docs/standard/schema/360-giving-schema.json"
+ - Create a virutal environment:`python -m venv .ve`
+ - `source .ve/bin/activate`
+ - Install requirements:`pip install -r requirements.txt`
+ - Run the command `python sotd.py --tar "*path/to/tarball.tar.gz*"`
 
 The script will extract JSON files from the tarball - these are spreadsheets and other files downloaded from the data registry and converted to JSON.
 
-Next, the script downloads the 360Giving JSON schema and flattens it into a spreadsheet. Then it processes each publisher's JSON file to produce the frequency information. Each file (Frequency, Schema, Data and Metadata) is created and the JSON files are archived, unless the --archive flag is FALSE.
+Next, the script downloads the 360Giving JSON schema and flattens it into a spreadsheet. Then it processes each publisher's JSON file to produce the frequency information. Each file (Frequency, Schema, Data and Metadata) is created (in `./data`) and the JSON files are archived, unless the --archive flag is FALSE.
 
 You can now use the files for analysis or manually copy the information into the State of the Data Prototype dashboard.
 
@@ -36,6 +39,7 @@ You can now use the files for analysis or manually copy the information into the
 
  1. Each file (Frequency, Schema, Data and Metadata) gets a date - this is the date from the datagetter tarball.
  2. 360Giving allows [more than one occurrence](http://www.threesixtygiving.org/standard/reference/#toc-one-to-many-relationships) for some fields per grant. For example, if a grant has 3 classifications, the publisher can provide each classification as a separate column or provide a new sheet with each classification as a new row. For one-to-many relationships, the script will count all values as a single column. This means a publisher could publish more classifications than grants.
+ 3. The default schema is the current master version http://standard.threesixtygiving.org/en/latest/_static/360-giving-schema.json, but a local or other url can be passed to the `--schema` argument.
 
 ## Things to do
 

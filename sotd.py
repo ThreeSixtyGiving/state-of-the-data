@@ -230,7 +230,7 @@ def main():
     # Arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--tar", help="Path to the tar file")
-    parser.add_argument("--schema", help="Path to the schema")
+    parser.add_argument("--schema", help="URL or Path to the schema (default=http://standard.threesixtygiving.org/en/latest/_static/360-giving-schema.json)", default="http://standard.threesixtygiving.org/en/latest/_static/360-giving-schema.json")
     args = parser.parse_args()
 
     # Exit early if parameters aren't properly supplied
