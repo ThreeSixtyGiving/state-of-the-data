@@ -120,7 +120,7 @@ def getSchemaFields(localSchema, recommendedFields):
                 defItem = schema["properties"][parentItem]["items"]["$ref"].split("/")[-1]
                 if defItem in schema["definitions"]:
                     if "properties" in schema["definitions"][defItem]:
-                        for childItem in schema["definitions"][defItem]["properties"]:                                
+                        for childItem in schema["definitions"][defItem]["properties"]:
                             if "weight" in schema["definitions"][defItem]["properties"][childItem]:
                                 childWt = (schema["definitions"][defItem]["properties"][childItem]["weight"])/1000
                             elif childItem in schema["definitions"]:
@@ -130,7 +130,25 @@ def getSchemaFields(localSchema, recommendedFields):
                                     childWt =  0.099
                             else:
                                 childWt = 0.1
-                            schemaSort.append([parentItem+"."+childItem, parentItem, parentWt, childWt, optWt])  
+                            ## Avoid adding *definition* objects as fields...
+                            if not "items" in schema["definitions"][defItem]["properties"][childItem]:
+                                schemaSort.append([parentItem+"."+childItem, parentItem, parentWt, childWt, optWt])
+                            else:
+                            ## ...Instead look *in* the defintion object for the fields that it has (grandchildren)
+                                if "items" in schema["definitions"][defItem]["properties"][childItem]:
+                                    childdefItem = schema["definitions"][defItem]["properties"][childItem]["items"]["$ref"].split("/")[-1]
+                                    if "properties" in schema["definitions"][childdefItem]:
+                                        for grandchildItem in schema["definitions"][childdefItem]["properties"]:
+                                            if "weight" in schema["definitions"][childdefItem]["properties"][grandchildItem]:
+                                                grandchildWt = (schema["definitions"][childdefItem]["properties"][grandchildItem]["weight"])/1000
+                                            elif grandchildItem in schema["definitions"]:
+                                                if "weight" in schema["definitions"][grandchildItem]:
+                                                    childWt = (schema["definitions"][grandchildItem]["weight"]/1000)
+                                                else:
+                                                    childWt =  0.099
+                                            else:
+                                                childWt = 0.1
+                                            schemaSort.append([parentItem+"."+childItem+"."+grandchildItem, parentItem, parentWt, childWt, optWt])
 
         # Create and sort dataframe                            
         df = pd.DataFrame(schemaSort, columns=["Fields","Parent","ParentWeight","Weight", "OptionalWeight"])
@@ -138,6 +156,7 @@ def getSchemaFields(localSchema, recommendedFields):
         df.sort_values(["ParentWeight","Parent","Weight"], inplace = True)                                      
     except:
         return None
+
     return df
 
 def flattenJson(jsonString, delimiter):
@@ -244,7 +263,7 @@ def main():
     dataAllFile = os.path.join("data","data_all.json")
     recommendedFields = ["grantProgramme","beneficiaryLocation","dataSource", "dateModified"]
        
-    # Exit if we can't get the files
+    # # Exit if we can't get the files
     if not getTar(tarPath):
         print("Error: Getting tar files")
         return False        
@@ -269,7 +288,7 @@ def main():
         print("Error: Getting metadata and frequency fields")
         return False  
     dfMeta.to_csv(os.path.join("data","meta.csv"),index=False)                
-    dfSchema.to_csv(os.path.join("data","schema.csv"),index=False)
+    dfSchema.to_csv(os.path.join("data","schema.csv"),index=True)
     dfAll.to_csv(os.path.join("data","data_all.csv"),index=False)
     dfFreq.to_csv(os.path.join("data","freq.csv"),index=False)    
 if __name__ == "__main__":
