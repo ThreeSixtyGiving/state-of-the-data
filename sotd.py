@@ -143,12 +143,12 @@ def getSchemaFields(localSchema, recommendedFields):
                                                 grandchildWt = (schema["definitions"][childdefItem]["properties"][grandchildItem]["weight"])/1000
                                             elif grandchildItem in schema["definitions"]:
                                                 if "weight" in schema["definitions"][grandchildItem]:
-                                                    childWt = (schema["definitions"][grandchildItem]["weight"]/1000)
+                                                    grandchildWt = (schema["definitions"][grandchildItem]["weight"]/1000)
                                                 else:
-                                                    childWt =  0.099
+                                                    grandchildWt =  0.099
                                             else:
-                                                childWt = 0.1
-                                            schemaSort.append([parentItem+"."+childItem+"."+grandchildItem, parentItem, parentWt, childWt, optWt])
+                                                grandchildWt = 0.1
+                                            schemaSort.append([parentItem+"."+childItem+"."+grandchildItem, parentItem, parentWt, grandchildWt, optWt])
 
         # Create and sort dataframe                            
         df = pd.DataFrame(schemaSort, columns=["Fields","Parent","ParentWeight","Weight", "OptionalWeight"])
